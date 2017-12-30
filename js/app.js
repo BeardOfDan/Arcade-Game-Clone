@@ -1,6 +1,6 @@
-var Enemy = function () {
-  "use strict";
+"use strict";
 
+const Enemy = function () {
   this.sprite = 'images/enemy-bug.png';
 
   this.x = -101;
@@ -22,8 +22,7 @@ var Enemy = function () {
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function (dt) {
   // You should multiply any movement by the dt parameter
-  // which will ensure the game runs at the same speed for
-  // all computers.
+  // which will ensure the game runs at the same speed for all computers.
   this.x += this.speed * dt;
   // dist/time * Δtime = Δdist
 
@@ -48,8 +47,6 @@ Enemy.prototype.render = function () {
 };
 
 var Player = function () {
-  "use strict";
-
   this.sprite = "images/char-boy.png";
   this.x = 404;
   this.y = 404;
@@ -71,11 +68,14 @@ Player.prototype.backToStart = function () {
 Player.prototype.respawn = function () {
   this.lives--;
   this.backToStart();
+
   if (this.lives < 1) { // Game Over
     this.lives = 3;
+
     if (this.score > this.bestScore) { // new High Score
       this.bestScore = this.score;
     }
+
     this.score = 0;
   }
 };
@@ -83,12 +83,14 @@ Player.prototype.respawn = function () {
 Player.prototype.victoryLap = function () {
   this.score++;
   this.backToStart();
+
   // increase the challenge
   // the enemies get a bit faster
-  allEnemies.forEach(function (enemy) {
-    enemy.speed += 15;
-  });
-  if (this.score % 3 === 0) {
+  for (let i = 0; i < allEnemies.length; i++) {
+    allEnemies[i].speed += 15;
+  }
+
+  if ((this.score % 3) === 0) {
     // every 3 points gets the player a new life
     this.lives++;
     // and a new enemy
@@ -141,6 +143,7 @@ Player.prototype.render = function () {
   } else {
     ctx.strokeStyle = "#fff";
   }
+
   ctx.fillText("Lives: " + this.lives, 205, 50);
   ctx.strokeText("Lives: " + this.lives, 205, 50);
 }; // end of Player.render()
