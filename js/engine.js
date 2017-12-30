@@ -20,11 +20,11 @@ var Engine = (function (global) {
    * create the canvas element, grab the 2D context for that canvas
    * set the canvas elements height/width and add it to the DOM.
    */
-  var doc = global.document,
-    win = global.window,
-    canvas = doc.createElement('canvas'),
-    ctx = canvas.getContext('2d'),
-    lastTime;
+  const doc = global.document;
+  const win = global.window;
+  const canvas = doc.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+  let lastTime;
 
   canvas.width = 909;
   canvas.height = 606;
@@ -40,8 +40,8 @@ var Engine = (function (global) {
      * would be the same for everyone (regardless of how fast their
      * computer is) - hurray time!
      */
-    var now = Date.now(),
-      dt = (now - lastTime) / 1000.0;
+    let now = Date.now();
+    let dt = (now - lastTime) / 1000.0;
 
     /* Call our update/render functions, pass along the time delta to
      * our update function since it may be used for smooth animation.
@@ -92,9 +92,9 @@ var Engine = (function (global) {
    * render methods.
    */
   function updateEntities(dt) {
-    allEnemies.forEach(function (enemy) {
-      enemy.update(dt);
-    });
+    for (let i = 0; i < allEnemies.length; i++) {
+      allEnemies[i].update(dt);
+    }
 
     player.update(dt);
   }
@@ -106,10 +106,10 @@ var Engine = (function (global) {
    * they are just drawing the entire screen over and over.
    */
   function render() {
-    /* This array holds the relative URL to the image used
+    /* This array holds the relative paths to the image used
      * for that particular row of the game level.
      */
-    var rowImages = [
+    const rowImages = [
       'images/water-block.png', // Top rows are water
       'images/water-block.png', //
       'images/stone-block.png', // Row 1 of 4 of stone
@@ -117,17 +117,16 @@ var Engine = (function (global) {
       'images/stone-block.png', // Row 3 of 4 of stone
       'images/stone-block.png', // Row 4 of 4 of stone
       'images/grass-block.png', // Bottom row is grass
-    ],
-      numRows = 7,
-      numCols = 9,
-      row, col;
+    ];
+    const numRows = 7;
+    const numCols = 9;
 
     /* Loop through the number of rows and columns we've defined above
      * and, using the rowImages array, draw the correct image for that
      * portion of the "grid"
      */
-    for (row = 0; row < numRows; row++) {
-      for (col = 0; col < numCols; col++) {
+    for (let row = 0; row < numRows; row++) {
+      for (let col = 0; col < numCols; col++) {
         /* The drawImage function of the canvas' context element
          * requires 3 parameters: the image to draw, the x coordinate
          * to start drawing and the y coordinate to start drawing.
@@ -150,9 +149,9 @@ var Engine = (function (global) {
     /* Loop through all of the objects within the allEnemies array and call
      * the render function you have defined.
      */
-    allEnemies.forEach(function (enemy) {
-      enemy.render();
-    });
+    for (let i = 0; i < allEnemies.length; i++) {
+      allEnemies[i].render();
+    }
 
     player.render();
   }
@@ -176,6 +175,7 @@ var Engine = (function (global) {
     'images/enemy-bug.png',
     'images/char-boy.png'
   ]);
+  
   Resources.onReady(init);
 
   /* Assign the canvas' context object to the global variable (the window

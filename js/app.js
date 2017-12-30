@@ -1,5 +1,20 @@
 "use strict";
 
+// A generic character class
+class Character {
+  constructor(x, y, speed, dt, sprite) {
+    this.x = x;
+    this.y = y;
+    this.speed = speed;
+    this.dt = dt;
+    this.sprite = sprite;
+
+    this.tileWidth = 101;
+    this.tileHeight = 84;
+    // because there is a partial vertical overlay, the height is less than the width
+  }
+}
+
 const Enemy = function () {
   this.sprite = 'images/enemy-bug.png';
 
@@ -96,6 +111,7 @@ Player.prototype.victoryLap = function () {
     // and a new enemy
     allEnemies.push(new Enemy());
   }
+
   // update score on screen
 };
 
@@ -124,8 +140,11 @@ Player.prototype.render = function () {
     ctx.strokeStyle = "gold";
   }
 
-  ctx.fillText("Score: " + this.score, 405, 50);
-  ctx.strokeText("Score: " + this.score, 405, 50);
+  const scoreText = 'Score: ' + this.score;
+  const scoreLocation = [405, 50];
+
+  ctx.fillText(scoreText, ...scoreLocation);
+  ctx.strokeText(scoreText, ...scoreLocation);
 
   if (this.bestScore > this.score) {
     ctx.strokeStyle = "gold";
@@ -133,8 +152,11 @@ Player.prototype.render = function () {
     ctx.strokeStyle = "#fff";
   }
 
-  ctx.fillText("High Score: " + this.bestScore, 605, 50);
-  ctx.strokeText("High Score: " + this.bestScore, 605, 50);
+  const highScoreText = 'High Score: ' + this.bestScore;
+  const highScoreLocation = [605, 50];
+
+  ctx.fillText(highScoreText, ...highScoreLocation);
+  ctx.strokeText(highScoreText, ...highScoreLocation);
 
   if (this.lives < 3) {
     ctx.strokeStyle = "#f00";
@@ -144,18 +166,19 @@ Player.prototype.render = function () {
     ctx.strokeStyle = "#fff";
   }
 
-  ctx.fillText("Lives: " + this.lives, 205, 50);
-  ctx.strokeText("Lives: " + this.lives, 205, 50);
+  const livesText = 'Lives: ' + this.lives;
+  const livesLocation = [205, 50];
+
+  ctx.fillText(livesText, ...livesLocation);
+  ctx.strokeText(livesText, ...livesLocation);
 }; // end of Player.render()
 
 Player.prototype.handleInput = function (eventKey) {
-  var nonGameKey = false;
   switch (eventKey) {
     case "up":
     case "w":
       this.y -= 83;
-      // this.victoryLap() will prevent the
-      // player from going too far up
+      // this.victoryLap() will prevent the player from going too far up
       break;
     case "down":
     case "s":
@@ -175,24 +198,24 @@ Player.prototype.handleInput = function (eventKey) {
         this.x += 101;
       }
       break;
-    default:
-      // the user pressed some other key
-      nonGameKey = true;
-  }
-
-  if (!nonGameKey) {
+    default: // the user pressed some other key
     //console.log("X: " + this.x + "  ||  Y: " + this.y);
   }
 }; // end of handleInput function
 
-var allEnemies = [
-  new Enemy(), new Enemy(), new Enemy(), new Enemy(), new Enemy(), new Enemy()
-];
+const allEnemies = [];
 
+// Initialize the board with 6 enemies
+for (let i = 0; i < 6; i++) {
+  allEnemies.push(new Enemy());
+}
+
+// create the player
 var player = new Player();
 
+// listen for user input
 document.addEventListener('keyup', function (e) {
-  var allowedKeys = {
+  const allowedKeys = {
     37: "left",
     38: "up",
     39: "right",

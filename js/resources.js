@@ -21,9 +21,9 @@
        * loop through each value and call our image
        * loader on that image file
        */
-      urlOrArr.forEach(function (url) {
-        _load(url);
-      });
+      for (let i = 0; i < urlOrArr.length; i++) {
+        _load(urlOrArr[i]);
+      }
     } else {
       /* The developer did not pass an array to this function,
        * assume the value is a string and call our image loader
@@ -59,7 +59,9 @@
          * call all of the onReady() callbacks we have defined.
          */
         if (isReady()) {
-          readyCallbacks.forEach(function (func) { func(); });
+          for (let i = 0; i < readyCallbacks.length; i++) {
+            readyCallbacks[i]();
+          }
         }
       };
 
@@ -84,14 +86,16 @@
    * for loading have in fact been properly loaded.
    */
   function isReady() {
-    var ready = true;
-    for (var k in resourceCache) {
-      if (resourceCache.hasOwnProperty(k) &&
-        !resourceCache[k]) {
-        ready = false;
+    const resourceKeys = Object.keys(resourceCache);
+
+    for (let i = 0; i < resourceKeys.length; i++) {
+      const key = resourceKeys[i];
+
+      if (resourceCache.hasOwnProperty(key) && !resourceCache[key]) {
+        return false;
       }
     }
-    return ready;
+    return true;
   }
 
   /* This function will add a function to the callback stack that is called
@@ -105,9 +109,6 @@
    * developers by creating a global Resources object.
    */
   window.Resources = {
-    load: load,
-    get: get,
-    onReady: onReady,
-    isReady: isReady
+    load, get, onReady, isReady
   };
 })();
