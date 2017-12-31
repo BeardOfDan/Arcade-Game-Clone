@@ -1,0 +1,18 @@
+{
+  "name": "classic-arcade-game",
+  "version": "",
+  "description": "Based off of the classic game, Frogger.",
+  "engines": {
+    "node": "8.2.1",
+    "npm": "5.4.2"
+  },
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.16.2"
+  },
+  "devDependencies": {
+    "nodemon": "^1.14.6"
+  }
+}
