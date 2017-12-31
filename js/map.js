@@ -1,9 +1,11 @@
+'use strict';
+
 class Map {
   constructor(rowImages = [], rows, cols, tileWidth, tileHeight, actionRows, actionSpot = tileWidth * actionRows) {
     this.rowImages = rowImages;
 
-    this.numRows = rows;
-    this.numCols = cols;
+    this.rows = rows;
+    this.cols = cols;
 
     this.tileWidth = tileWidth;
     this.tileHeight = tileHeight;
@@ -14,6 +16,8 @@ class Map {
 }
 
 const map = (function () {
+  // The input for the Map class constructor is inside of an IIFE
+  // to avoid polluting the global namespace
   const rowImages = [
     'images/water-block.png', // Top rows are water
     'images/water-block.png', //

@@ -1,24 +1,20 @@
-"use strict";
+'use strict';
 
 class Enemy {
   constructor() {
-    this.tileWidth = 101;
-    this.tileHeight = 83;
-    // because there is a partial vertical overlay of the tiles, the height is less than the width
-
     this.x = -map.tileWidth;
-    this.y = (Math.floor(Math.random() * 4) * map.tileHeight) + map.tileHeight;
+    this.y = (Math.floor(Math.random() * map.actionRows) * map.tileHeight) + map.tileHeight;
 
     this.topSpeed = 350;
     this.playerKills = 0;
 
-    this.speed = Math.floor(Math.random() * this.topSpeed + 1);
+    this.speed = Math.floor((Math.random() * this.topSpeed) + 1);
     this.sprite = 'images/enemy-bug.png';
   }
 
   update(dt) {
     this.x += this.speed * dt;
-    //   x += dist/time  * Δtime
+    //  Δx += dist/time  * Δtime
 
     // detect collision with player
     if ((Math.abs(this.x - player.x) < 70) && (Math.abs(this.y - player.y) < 15)) {
@@ -31,7 +27,7 @@ class Enemy {
     if (this.x > ctx.canvas.width) { // put enemy at respawn point
       this.x = -map.tileWidth;
       // put enemy on a random new row
-      this.y = (Math.floor(Math.random() * 4) * map.tileHeight) + this.tileHeight;
+      this.y = (Math.floor(Math.random() * map.actionRows) * map.tileHeight) + map.tileHeight;
     }
   };
 
@@ -42,7 +38,7 @@ class Enemy {
 
 class Player {
   constructor() {
-    this.sprite = "images/char-boy.png";
+    this.sprite = 'images/char-boy.png';
     this.y = this.x = map.actionSpot;
 
     this.score = 0;
@@ -107,13 +103,13 @@ class Player {
   render() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 
-    ctx.font = "26px Arial";
-    ctx.fillStyle = "#000";
+    ctx.font = '26px Arial';
+    ctx.fillStyle = '#000';
     ctx.lineWidth = 1;
-    ctx.strokeStyle = "#fff";
+    ctx.strokeStyle = '#fff';
 
     if (this.score > this.bestScore) {
-      ctx.strokeStyle = "gold";
+      ctx.strokeStyle = 'gold';
     }
 
     const scoreText = 'Score: ' + this.score;
@@ -123,23 +119,23 @@ class Player {
     ctx.strokeText(scoreText, ...scoreLocation);
 
     if (this.bestScore > this.score) {
-      ctx.strokeStyle = "gold";
+      ctx.strokeStyle = 'gold';
     } else {
-      ctx.strokeStyle = "#fff";
+      ctx.strokeStyle = '#fff';
     }
 
     const highScoreText = 'High Score: ' + this.bestScore;
-    const highScoreLocation = [605, 50];
+    const highScoreLocation = [606, 50];
 
     ctx.fillText(highScoreText, ...highScoreLocation);
     ctx.strokeText(highScoreText, ...highScoreLocation);
 
     if (this.lives < 3) {
-      ctx.strokeStyle = "#f00";
+      ctx.strokeStyle = '#f00';
     } else if (this.lives > 3) {
-      ctx.strokeStyle = "#0f0";
+      ctx.strokeStyle = '#0f0';
     } else {
-      ctx.strokeStyle = "#fff";
+      ctx.strokeStyle = '#fff';
     }
 
     const livesText = 'Lives: ' + this.lives;
@@ -151,27 +147,27 @@ class Player {
 
   handleInput(eventKey) {
     switch (eventKey) {
-      case "ArrowUp":
-      case "w":
-        this.y -= 83;
+      case 'ArrowUp':
+      case 'w':
+        this.y -= map.tileHeight;
         // this.victoryLap() will prevent the player from going too far up
         break;
-      case "ArrowDown":
-      case "s":
-        if (this.y < 404) {
-          this.y += 83;
+      case 'ArrowDown':
+      case 's':
+        if (this.y < map.actionSpot) {
+          this.y += map.tileHeight;
         }
         break;
-      case "ArrowLeft":
-      case "a":
+      case 'ArrowLeft':
+      case 'a':
         if (this.x > 0) {
-          this.x -= 101;
+          this.x -= map.tileWidth;
         }
         break;
-      case "ArrowRight":
-      case "d":
-        if (this.x < 808) {
-          this.x += 101;
+      case 'ArrowRight':
+      case 'd':
+        if (this.x < ((map.rows + 1) * map.tileWidth)) {
+          this.x += map.tileWidth;
         }
         break;
       default: // the user pressed some other key
