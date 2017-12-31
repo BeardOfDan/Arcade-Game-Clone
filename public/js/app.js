@@ -171,7 +171,7 @@ class Player {
         }
         break;
       default: // the user pressed some other key
-        console.log(eventKey);
+      // console.log(eventKey);
     }
   } // end of handleInput function
 } // end of class Player
